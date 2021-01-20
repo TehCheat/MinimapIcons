@@ -129,6 +129,9 @@ namespace MinimapIcons
 
             foreach (var icon in baseIcons)
             {
+                if (icon == null) continue;
+                if (icon.Entity == null) continue;
+
                 if (icon.Entity.Type == EntityType.WorldItem)
                     continue;
 
