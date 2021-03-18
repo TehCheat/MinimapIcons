@@ -115,8 +115,10 @@ namespace MinimapIcons
         {
             if (!Settings.Enable.Value || !GameController.InGame || Settings.DrawOnlyOnLargeMap && !largeMap) return;
 
-            if (ingameStateIngameUi.AtlasPanel.IsVisibleLocal || ingameStateIngameUi.DelveWindow.IsVisibleLocal ||
-                ingameStateIngameUi.TreePanel.IsVisibleLocal)
+            if (ingameStateIngameUi.Atlas.IsVisibleLocal || ingameStateIngameUi.DelveWindow.IsVisibleLocal || ingameStateIngameUi.TreePanel.IsVisibleLocal)
+                return;
+
+            if (!GameController.Player.HasComponent<Positioned>() || !GameController.Player.HasComponent<Render>())
                 return;
 
             var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
