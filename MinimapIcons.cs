@@ -119,13 +119,20 @@ namespace MinimapIcons
                 ingameStateIngameUi.TreePanel.IsVisibleLocal)
                 return;
 
-            var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            var posZ = GameController.Player.GetComponent<Render>().Pos.Z;
+            Positioned playerPositioned = GameController?.Player?.GetComponent<Positioned>();
+            if (playerPositioned == null) return;
+            Vector2 playerPos = playerPositioned.GridPos;
+            Render playerRender = GameController?.Player?.GetComponent<Render>();
+            if (playerRender == null) return;
+            float posZ = playerRender.Pos.Z;
+
+            if (mapWindow == null) return;
             var mapWindowLargeMapZoom = mapWindow.LargeMapZoom;
 
-            var baseIcons = GameController.EntityListWrapper.OnlyValidEntities
+            var baseIcons = GameController?.EntityListWrapper?.OnlyValidEntities
                 .SelectWhereF(x => x.GetHudComponent<BaseIcon>(), icon => icon != null).OrderByF(x => x.Priority)
                 .ToList();
+            if (baseIcons == null) return;
 
             foreach (var icon in baseIcons)
             {
@@ -147,6 +154,7 @@ namespace MinimapIcons
                 var component = icon?.Entity?.GetComponent<Render>();
                 if (component == null) continue;
                 var iconZ = component.Pos.Z;
+
                 Vector2 position;
 
                 if (largeMap)
@@ -218,8 +226,7 @@ namespace MinimapIcons
                                        MapIcon.DeltaInWorldToMinimapDelta(icon.GridPosition() - playerPos, diag, 240f, (iconZ - posZ) / 20);
                         }
 
-                        HudTexture iconValueMainTexture;
-                        iconValueMainTexture = icon.MainTexture;
+                        HudTexture iconValueMainTexture = icon.MainTexture;
                         var size = iconValueMainTexture.Size;
                         var halfSize = size / 2f;
                         icon.DrawRect = new RectangleF(position.X - halfSize, position.Y - halfSize, size, size);
