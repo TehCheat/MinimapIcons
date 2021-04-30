@@ -121,8 +121,8 @@ namespace MinimapIcons
             if (!GameController.Player.HasComponent<Positioned>() || !GameController.Player.HasComponent<Render>())
                 return;
 
-            var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            var posZ = GameController.Player.GetComponent<Render>().Pos.Z;
+            var playerPos = GameController.Player?.GetComponent<Positioned>()?.GridPos ?? new Vector2();
+            var posZ = GameController.Player.GetComponent<Render>()?.Pos.Z ?? 0;
             var mapWindowLargeMapZoom = mapWindow.LargeMapZoom;
 
             var baseIcons = GameController.EntityListWrapper.OnlyValidEntities
